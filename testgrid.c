@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> 
+#include <unistd.h>
 #include <string.h>
 
-#include <sys/stat.h> 
-#include <sys/types.h> 
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include <newt.h>
 
@@ -23,37 +23,36 @@ int main(void) {
          { "Third entry", entries + 2, 0 },
          { "Fourth entry", entries + 3, 0 },
          { NULL, NULL, 0 } };
- 
+
     memset(entries, 0, sizeof(entries));
- 
+
     newtInit();
     newtCls();
- 
+
     b1 = newtCheckbox(-1, -1, "An pretty long checkbox for testing", ' ', NULL, NULL);
     b2 = newtButton(-1, -1, "Another Button");
     b3 = newtButton(-1, -1, "But, but");
     b4 = newtButton(-1, -1, "But what?");
- 
+
     f = newtForm(NULL, NULL, 0);
- 
+
     grid = newtCreateGrid(2, 2);
-    newtGridSetField(grid, 0, 0, NEWT_GRID_COMPONENT, b1, 0, 0, 0, 0, 
-                          NEWT_ANCHOR_RIGHT, 0);
+    newtGridSetField(grid, 0, 0, NEWT_GRID_COMPONENT, b1, 0, 0, 0, 0, NEWT_ANCHOR_RIGHT, 0);
     newtGridSetField(grid, 0, 1, NEWT_GRID_COMPONENT, b2, 0, 0, 0, 0, 0, 0);
     newtGridSetField(grid, 1, 0, NEWT_GRID_COMPONENT, b3, 0, 0, 0, 0, 0, 0);
     newtGridSetField(grid, 1, 1, NEWT_GRID_COMPONENT, b4, 0, 0, 0, 0, 0, 0);
- 
- 
+
+
     newtFormAddComponents(f, b1, b2, b3, b4, NULL);
- 
+
     newtGridWrappedWindow(grid, "first window");
     newtGridFree(grid, 1);
- 
+
     answer = newtRunForm(f);
-         
+
     newtFormDestroy(f);
     newtPopWindow();
- 
+
     flowedText = newtReflowText("This is a quite a bit of text. It is 40 "
                                    "columns long, so some wrapping should be "
                                    "done. Did you know that the quick, brown "
@@ -64,47 +63,47 @@ int main(void) {
     t = newtTextbox(-1, -1, textWidth, textHeight, NEWT_FLAG_WRAP);
     newtTextboxSetText(t, flowedText);
     free(flowedText);
- 
-    
+
+
     b1 = newtButton(-1, -1, "Okay");
     b2 = newtButton(-1, -1, "Cancel");
- 
+
     grid = newtCreateGrid(1, 2);
     subgrid = newtCreateGrid(2, 1);
- 
+
     newtGridSetField(subgrid, 0, 0, NEWT_GRID_COMPONENT, b1, 0, 0, 0, 0, 0, 0);
     newtGridSetField(subgrid, 1, 0, NEWT_GRID_COMPONENT, b2, 0, 0, 0, 0, 0, 0);
- 
+
     newtGridSetField(grid, 0, 0, NEWT_GRID_COMPONENT, t, 0, 0, 0, 1, 0, 0);
     newtGridSetField(grid, 0, 1, NEWT_GRID_SUBGRID, subgrid, 0, 0, 0, 0, 0,
                           NEWT_GRID_FLAG_GROWX);
     newtGridWrappedWindow(grid, "another example");
     newtGridDestroy(grid, 1);
- 
+
     f = newtForm(NULL, NULL, 0);
     newtFormAddComponents(f, b1, t, b2, NULL);
     answer = newtRunForm(f);
- 
+
     newtPopWindow();
     newtFormDestroy(f);
- 
+
     newtWinMessage("Simple", "Ok", "This is a simple message window");
     newtWinChoice("Simple", "Ok", "Cancel", "This is a simple choice window");
- 
+
     textWidth = 0;
     rc = newtWinMenu("Test Menu", "This is a sample invovation of the "
                       "newtWinMenu() call. It may or may not have a scrollbar, "
-                      "depending on the need for one.", 50, 5, 5, 3, 
+                      "depending on the need for one.", 50, 5, 5, 3,
                        menuContents, &textWidth, "Ok", "Cancel", NULL);
- 
+
     rc = newtWinEntries("Text newtWinEntries()", "This is a sample invovation of "
                       "newtWinEntries() call. It lets you get a lot of input "
-                      "quite easily.", 50, 5, 5, 20, autoEntries, "Ok", 
+                      "quite easily.", 50, 5, 5, 20, autoEntries, "Ok",
                       "Cancel", NULL);
- 
+
     newtFinished();
- 
+
     printf("rc = 0x%x item = %d\n", rc, textWidth);
- 
+
     return 0;
 }
